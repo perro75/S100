@@ -249,8 +249,36 @@ namespace TimeHandler
 			var comp = trdRange.ToCompleteDateRanges(2016, 2018);
 			//Not within given period of interest
 			Assert.Null(comp);
-			
+		}
 		
+		[Test]
+		public void test_complete_date_range_5()
+		{
+			var start = new TruncatedDate(null, 12, 22);
+			var end = new TruncatedDate(null, 12, 27);
+			
+			var trdRange = new TruncatedDateRange(start, end);
+			var comp = trdRange.ToCompleteDateRanges(2016, 2018);
+			//should be 3 ranges, one for each year
+			Assert.NotNull(comp);
+			Assert.AreEqual(3, comp.Length);
+			
+			Assert.AreEqual(12, comp[0].DateStart.Month);
+			Assert.AreEqual(22, comp[0].DateStart.Day);
+			
+			Assert.AreEqual(12, comp[2].DateEnd.Month);
+			Assert.AreEqual(27, comp[2].DateEnd.Day);
+			
+			Assert.AreEqual(2016, comp[0].DateStart.Year);
+			Assert.AreEqual(2017, comp[1].DateStart.Year);
+			Assert.AreEqual(2018, comp[2].DateStart.Year);
+			
+			Assert.AreEqual(2016, comp[0].DateEnd.Year);
+			Assert.AreEqual(2017, comp[1].DateEnd.Year);
+			Assert.AreEqual(2018, comp[2].DateEnd.Year);
+			
+			
+			
 		}
 		
 	}

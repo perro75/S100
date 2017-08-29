@@ -49,7 +49,6 @@ namespace TimeHandler
 		}
 		
 		/// <summary>
-		/// TODO Check if this range overlaps with another range.
 		///   x--------x
 		/// x----x
 		/// 

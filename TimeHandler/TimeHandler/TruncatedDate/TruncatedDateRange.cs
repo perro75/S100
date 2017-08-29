@@ -50,10 +50,10 @@ namespace TimeHandler
 		{
 			var periodOfInterest = new CompleteDateRange(new CompleteDate(yearStart,1,1), new CompleteDate(yearEnd,12,31));
 			
-			CompleteDateRange maxRange;
-			
 			CompleteDate completeStart, completeEnd;
-			 			
+			var count = 1;
+			var completeRanges = new CompleteDateRange[count];
+			
 			switch (this.dateStart.TruncationType)
 			{
 				
@@ -61,28 +61,32 @@ namespace TimeHandler
 				case 6:
 				case 7:
 					//only one period
-					//TODO Add check whether single period is within given range of interest
 					completeStart = dateStart.MakeCompleteUsing(new CompleteDate(yearStart, 1,1));
 					completeEnd = dateEnd.MakeCompleteUsing(new CompleteDate(yearEnd, 12,31));
 					//max range is start of first occurence and end of last
-					maxRange = new CompleteDateRange(completeStart, completeEnd);
-					return maxRange.Overlaps(periodOfInterest) ? new CompleteDateRange[]{maxRange} : null;
+					completeRanges[0] = new CompleteDateRange(completeStart, completeEnd);
+					return completeRanges[0].Overlaps(periodOfInterest) ? completeRanges : null;
 					
 				case 1:
 				case 5:
-					//one period each month
-					//TODO Add code for monthly period
+					//one period each month ( month missing )
+					//TODO Monthly period not implemented!
+					throw new NotImplementedException("TruncatedDateRange.cs line 74");
 					return null;
 				case 2:
 				case 3:
 					//yearly period
-					//TODO Add code for yearly period
-					for(var i = yearStart; i < yearEnd; i++)
+					count = yearEnd-yearStart +1;
+					completeRanges = new CompleteDateRange[count];
+					
+					for(var i = 0; i < count; i++)
 					{
-						
+						completeStart = dateStart.MakeCompleteUsing(new CompleteDate(yearStart + i, 1,1));
+						completeEnd = dateEnd.MakeCompleteUsing(new CompleteDate(yearStart + i, 12,31));
+						completeRanges[i] = new CompleteDateRange(completeStart, completeEnd);
 					}
 					
-					return null;
+					return completeRanges;
 					
 				
 					
